@@ -900,34 +900,40 @@ function getData(name) {
 
 
 // AI anaylices data using AI` model
-async function analyzeWithAI(prompt) {
+async function analyzeWithAI(prompt, jsonData) {
   try {
     console.log("Calling analyzeWithAI with prompt:", prompt.substring(0, 50) + "...");
-    
-    const response = await fetch('https://saveps.netlify.app/.netlify/functions/analyzeWithAI', {
+
+    const response = await fetch('https://--.netlify.app/.netlify/functions/analyzeWithAI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({
+        prompt: prompt,
+        data: jsonData
+      }),
     });
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error(`Error from API (${response.status}):`, errorText);
       throw new Error(`API responded with status ${response.status}`);
     }
-    
+
     const data = await response.json();
     console.log("Received response:", data);
     return data;
   } catch (error) {
     console.error("Error in analyzeWithAI:", error.message);
-    // Return a fallback result so the app doesn't crash
-    return { 
-      error: error.message, 
+    return {
+      error: error.message,
       fallback: true,
-      choices: [{ message: { content: "Unable to analyze data at this time." } }]
+      choices: [{
+        message: {
+          content: "Unable to analyze data at this time."
+        }
+      }]
     };
   }
 }
@@ -1094,45 +1100,39 @@ Example structure for guidance:
 let hasProcessed = false;
 
 // To watch a specific key in the globalData object
-function watchProperty(obj, property, callback) {
-  let currentValue = obj[property];
-  
-  return setInterval(() => {
-    if (obj[property] !== currentValue) {
-      const oldValue = currentValue;
-      currentValue = obj[property];
-      callback(currentValue, oldValue);
-    }
-  }, 100); // Check every 100ms
-}
-
-// Watch the specific property
-watchProperty(globalData, 'thisYersData', (newValue, oldValue) => {
+watchProperty(globalData, 'thisYersData', async (newValue, oldValue) => {
   console.log("thisYersData changed:", newValue);
-  
+
   if (hasProcessed) return;
-  
+
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
-  
+
   if (!cachedData && newValue) {
     console.log("Executing analysis...");
-    analyzeWithAI(`Data SET: ${newValue} --end ${prompt_three}`)
-      .then(result => {
-        if (!result.error) {
-          const content = result.choices[0].message.content;
 
-          console.log("Data From AI: ", content)
-          console.log("Parse Data from AI: ", parseAIdata(content))
-          // Process the result
-          saveData(dataName, parseAIdata(content));
-          inject(parseAIdata(content), 'analysis-container');
-        } else {
-          console.warn("Using fallback content due to error");
-          inject("Analysis unavailable. Please try again later.", 'analysis-container');
-        }
-        hasProcessed = true;
-      });
+    try {
+      const result = await analyzeWithAI(prompt_three, newValue);
+
+      if (!result.error) {
+        const content = result.choices[0].message.content;
+        const parsed = parseAIdata(content);
+
+        console.log("Data From AI:", content);
+        console.log("Parsed Data:", parsed);
+
+        saveData(dataName, parsed);
+        inject(parsed, 'analysis-container');
+      } else {
+        console.warn("Using fallback content due to error");
+        inject("Analysis unavailable. Please try again later.", 'analysis-container');
+      }
+    } catch (err) {
+      console.error("Unexpected error during analysis:", err);
+      inject("Unexpected error. Please try again later.", 'analysis-container');
+    }
+
+    hasProcessed = true;
   } else if (cachedData) {
     console.log("Using cached data");
     inject(cachedData, 'analysis-container');
