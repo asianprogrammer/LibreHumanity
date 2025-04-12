@@ -1,5 +1,5 @@
 export async function handler(event, context) {
-  const apiKey = process.env.OPENROUTER_API_KEY;
+  const apiKey = process.env.API_KEY;
 
   if (!apiKey) {
     return {
