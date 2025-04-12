@@ -905,7 +905,7 @@ function getData(name) {
 // AI anaylices data using AI` model
 async function analyzeWithAI(prompt) {
   console.log("Function Caled, API is safe")
-  const response = await fetch('/.netlify/functions/analyzeWithAI', {
+  const response = await fetch('./netlify/functions/analyzeWithAI', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -1088,16 +1088,19 @@ Example structure for guidance:
 // watch implementation
 let hasProcessed = false;
 globalData = watch(globalData, (data) => {
+  console.log("Before Procces")
   if (hasProcessed) return;
+
   
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
 
   if (!cachedData && data.thisYersData) {
-      alert("Executed")
+      console.log("Executed")
       analyzeWithAI(prompt_three + " Data: " + data.thisYersData);
       hasProcessed = true;
   } else if (cachedData) {
+      console.log("Cashed")
       inject(cachedData, 'analysis-container');
       hasProcessed = true;
   }
