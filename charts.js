@@ -653,6 +653,8 @@ function getDaysDifference(targetDate, offsetDays = 0) {
   globalData.totalDay = data.length;
   globalData.thisYersData = data;
 
+  analyzeWithAI(prompt_three + " Data: " + data);
+
   
   $("#today-kill-count").innerHTML = "Killed "+lastDayData.killed;
   $("#today-injuries-count").innerHTML = "Injured "+lastDayData.injured;
@@ -903,7 +905,7 @@ function getData(name) {
 // AI anaylices data using AI` model
 async function analyzeWithAI(prompt) {
   console.log("Function Caled, API is safe")
-  const response = await fetch('./netlify/functions/analyzeWithAI', {
+  const response = await fetch('/.netlify/functions/analyzeWithAI', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -1089,7 +1091,6 @@ globalData = watch(globalData, (data) => {
   console.log("Before Procces")
   if (hasProcessed) return;
   console.log("After procces")
-  console.log(localStorage.getItem('conflict-data'))
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
 
