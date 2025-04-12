@@ -1,5 +1,6 @@
 export async function handler(event, context) {
   const apiKey = process.env.API_KEY;
+  console.log("API_Leaaked: ", apiKey)
 
   if (!apiKey) {
     return {

@@ -1084,18 +1084,23 @@ Example structure for guidance:
   "variance": "+117%"  
 }]  
 `
-console.log("Before caled data: ", globalData)
+
 // watch implementation
+let hasProcessed = false;
 globalData = watch(globalData, (data) => {
-  console.log(data)
+  console.log("Before Procces")
+  if (hasProcessed) return;
+  
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
 
-  if (!cachedData) {
+  if (!cachedData && data.thisYersData) {
       console.log("Executed")
       analyzeWithAI(prompt_three + " Data: " + data.thisYersData);
+      hasProcessed = true;
   } else if (cachedData) {
       console.log("Cashed")
       inject(cachedData, 'analysis-container');
+      hasProcessed = true;
   }
 });
