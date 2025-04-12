@@ -1,0 +1,111 @@
+
+@font-face {
+    font-family: inter;
+    src: url(./assets/fonts/Inter.ttf);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 1em;
+    font-family: inter;
+}
+
+.icon {
+    width: 25px;
+    height: 20px;
+}
+
+.icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.small-text {
+    color: #666;
+    font-size: 0.8em;
+    margin-top: -2em;
+    margin-bottom: 0.4em;
+}
+
+.small-red {
+    font-size: 0.7em;
+    color: red;
+}
+
+.data-cards-container {
+    margin-top: 1em;
+    flex-wrap: wrap;
+}
+
+.small-data-card {
+    margin-right: 1em;
+    padding: 1em 1.5em;
+    border-radius: 4px;
+    margin-bottom: 1em;
+    background: #fafbff;
+    box-shadow: rgba(99, 99, 99, 0.11) 0px 2px 8px 0px;
+}
+.small-data-card .title {
+    font-size: 1.2em;
+    color: #333;
+}
+.small-data-card .value {
+    font-size: 1.5em;
+    color: #333;
+}
+
+.small-chart {
+    width: 180px;
+    height: 80px;
+}
+
+#pie-chart {
+    width: 40%;
+    height: 400px;
+    max-width: 700px;
+}
+
+#map-chart {
+    width: 55%;
+}
+
+#candlestickChart {
+    width: 100%;
+    height: 600px;
+    margin: 0 auto;
+}
+
+#candlestickChartTitle {
+    text-align: center;
+    margin-top: 3em;
+    margin-bottom: 1em;
+}
+
+@media (max-width: 768px) {
+    .small-data-card {
+        width: 100%;
+        padding-top: 3em;
+        max-height: none !important;
+        align-items: flex-start;
+        height: fit-content;
+        flex-direction: column;
+    }
+    .small-chart {
+        width: 100%;
+    }
+    .pie-and-map {
+        flex-direction: column-reverse;
+    }
+    #map-chart {
+        width: 100%;
+        height: 400px;
+    }
+    #pie-chart {
+        width: 100%;
+    }
+}

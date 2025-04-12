@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LibreHumanity</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.3/dist/echarts.min.js"></script> -->
+    <script src="./echarts.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/echarts/theme/roma.js"></script> -->
+    <link rel="stylesheet" href="./assets/styles/flex.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Save, Gaza - Palestine
+            <img width="fit-content" height="24"  src="./assets/icons/Palestine.gif" alt="Palestine Flag" >
+        </h1>
+        <div class="date"><span class="data-date"></span> Last Report Data from ministry of palestine</div>
+    </header>
+
+    <section class="flex FY-center data-cards-container">
+        <div class="data flex FY-center small-data-card">
+            <section>
+                <div class="small-text">Last Day Killed</div>
+                <section class="flex FY-center">
+                    <h4 id="today-kill-count">Loading...</h4>
+                    <div class="icon">
+                        <img src="./assets/icons/kill.svg" >
+                    </div>
+                </section>
+            </section>
+            <div class="small-chart" id="kill-chart"></div>
+        </div>
+
+        <div class="data flex FY-center small-data-card">
+            <section>
+                <div class="small-text">Last Day Injuries</div>
+                <section class="flex FY-center">
+                    <h4 id="today-injuries-count">Loading...</h4>
+                    <div class="icon">
+                        <img src="./assets/icons/in3.svg" >
+                    </div>
+                </section>
+            </section>
+            <div class="small-chart" id="injured-chart"></div>
+        </div>
+
+        <div class="data flex FY-center small-data-card">
+            <section>
+                <div class="small-text">Last 7 days kid's killed</div>
+                <section class="flex FY-center">
+                    <h4 id="kids-kill-count">Loading...</h4>
+                    <div class="icon">
+                        <img src="./assets/icons/kill.svg" >
+                    </div>
+                </section>
+            </section>
+            <div class="small-chart" id="kids"></div>
+        </div>
+
+        <div class="data flex FY-center small-data-card">
+            <section>
+                <div class="small-text">Last 7 Days Women Killed</div>
+                <section class="flex FY-center">
+                    <h4 id="women-kill-count">Loading...</h4>
+                    <div class="icon">
+                        <img src="./assets/icons/women.svg" >
+                    </div>
+                </section>
+            </section>
+            <div class="small-chart" id="women"></div>
+        </div>
+
+        <div class="data flex FY-center small-data-card">
+            <section>
+                <div class="small-text">Total killed over <span id="data-days-count">💔</span> days</div>
+                <section class="flex FY-center">
+                    <h4 id="cumul-count">Loading...</h4>
+                    <div class="icon">
+                        <img src="./assets/icons/kill.svg" >
+                    </div>
+                </section>
+            </section>
+            <div class="small-chart" id="cumulative"></div>
+        </div>
+    </section>
+
+    <br><br><br><br>
+    <!-- Creating total kill's ..etc val -->
+    <section class="flex F-space pie-and-map">
+        <div id="map-chart"></div>
+        <div id="pie-chart"></div>
+    </section>
+
+
+    <br><br><br>
+    <h3 id="candlestickChartTitle"></h3>
+    <div id="candlestickChart" ></div>
+
+    <br><br><br><br>
+
+    <div id="analysis-container" class="ai-genarated">Requesting on AI server</div>
+
+
+    <script src="./functions.js"></script>
+    <script src="./charts.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

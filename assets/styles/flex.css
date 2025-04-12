@@ -1,0 +1,48 @@
+/* Cross-browser support for flex display */
+.flex {
+    display: flex;  
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+}
+
+.FY-center {
+    align-items: center; 
+}
+
+.FY-end {
+    align-items: flex-end;
+}
+
+.FY-top {
+    align-items: flex-start;
+}
+
+.F-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.F-space {
+    justify-content: space-between;
+}
+
+.F-even {
+    justify-content: space-evenly;
+}
+
+.F-end {
+    align-items: flex-end;
+}
+
+.FX-end {
+    justify-content: flex-end
+}
+
+.FW {
+    flex-direction: column;
+}
+
+.F-start {
+    justify-content: flex-start;
+}
