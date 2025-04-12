@@ -1082,23 +1082,41 @@ Example structure for guidance:
 }]  
 `
 
-// watch implementation
+
 let hasProcessed = false;
-globalData = watch(globalData, (data) => {
-  console.log("Before Procces")
+
+// To watch a specific key in the globalData object
+function watchProperty(obj, property, callback) {
+  let currentValue = obj[property];
+  
+  return setInterval(() => {
+    if (obj[property] !== currentValue) {
+      const oldValue = currentValue;
+      currentValue = obj[property];
+      callback(currentValue, oldValue);
+    }
+  }, 100); // Check every 100ms, adjust as needed
+}
+
+// Usage - watching the specific key
+watchProperty(globalData, 'thisYersData', (newValue, oldValue) => {
+  console.log("Before Process");
   if (hasProcessed) return;
-  console.log("After procces")
+  console.log("After process");
+  console.log("This years data: ", newValue);
+  
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
   console.log("cachedData:", cachedData);
-  console.log("data.thisYersData:", data.thisYersData);
-  if (!cachedData && data.thisYersData) {
-      console.log("Executed")
-      analyzeWithAI(prompt_three + " Data: " + data.thisYersData);
-      hasProcessed = true;
+  console.log("thisYersData:", newValue);
+  
+  if (!cachedData && newValue) {
+    console.log("Executed");
+    analyzeWithAI(prompt_three + " Data: " + newValue);
+    hasProcessed = true;
   } else if (cachedData) {
-      console.log("Cashed")
-      inject(cachedData, 'analysis-container');
-      hasProcessed = true;
+    console.log("Cached");
+    inject(cachedData, 'analysis-container');
+    hasProcessed = true;
   }
 });
