@@ -1117,13 +1117,16 @@ watchProperty(globalData, 'thisYersData', (newValue, oldValue) => {
   
   if (!cachedData && newValue) {
     console.log("Executing analysis...");
-    analyzeWithAI(prompt_three + " Data: " + newValue)
+    analyzeWithAI(`Data SET: ${newValue} --end ${prompt_three}`)
       .then(result => {
         if (!result.error) {
           const content = result.choices[0].message.content;
+
+          console.log(content)
+          console.log(parseAIdata(content))
           // Process the result
-          saveData(dataName, content);
-          inject(content, 'analysis-container');
+          saveData(dataName, parseAIdata(content));
+          inject(parseAIdata(content), 'analysis-container');
         } else {
           console.warn("Using fallback content due to error");
           inject("Analysis unavailable. Please try again later.", 'analysis-container');
