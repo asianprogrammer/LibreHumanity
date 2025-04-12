@@ -894,10 +894,8 @@ function saveData(data, name) {
 function getData(name) {
   const stored = localStorage.getItem(name);
   if (!stored) return false;
-  
   const parsed = JSON.parse(stored);
   const today = new Date().toISOString().split('T')[0];
-  
   return parsed.date === today ? parsed.data : false;
 }
 
