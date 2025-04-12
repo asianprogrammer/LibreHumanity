@@ -1088,7 +1088,8 @@ let hasProcessed = false;
 globalData = watch(globalData, (data) => {
   console.log("Before Procces")
   if (hasProcessed) return;
-  
+  console.log("After procces")
+  console.log(localStorage.getItem('conflict-data'))
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
 
