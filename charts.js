@@ -1084,7 +1084,7 @@ Example structure for guidance:
   "variance": "+117%"  
 }]  
 `
-
+console.log("Before caled data: ", globalData)
 // watch implementation
 globalData = watch(globalData, (data) => {
   console.log(data)
