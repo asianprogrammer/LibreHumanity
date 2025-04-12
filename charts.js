@@ -903,37 +903,27 @@ function getData(name) {
 
 
 // AI anaylices data using AI` model
-// SECRET API Key
-const NEW_KEY = false;
-
-// Your existing AI function
 async function analyzeWithAI(prompt) {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-      method: "POST",
-      headers: {
-          "Authorization": `Bearer ${NEW_KEY}`,
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-          model: "deepseek/deepseek-r1-zero:free",
-          messages: [
-              { role: "system", content: "You are a helpful assistant." },
-              { role: "user", content: prompt }
-          ]
-      })
+  console.log("Function Caled, API is safe")
+  const response = await fetch('/.netlify/functions/analyzeWithAI', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ prompt }),
   });
 
   if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Error:", errorData.error.message);
-      $("#analysis-containe").innerHTML = "AI Burn Out...";
-      return;
+    const errorData = await response.json();
+    console.error('Error:', errorData.error);
+    document.getElementById('analysis-container').innerHTML = 'AI Burn Out...';
+    return;
   }
 
   const result = await response.json();
   const data = parseAIdata(result.choices[0].message.reasoning);
-  saveData(data, 'conflict-data');
-  inject(data, "analysis-container");
+  saveData(data, 'real-data');
+  inject(data, 'analysis-container');
 }
 
 
