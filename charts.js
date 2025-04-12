@@ -1086,12 +1086,8 @@ Example structure for guidance:
 `
 
 // watch implementation
-let hasProcessed = false;
 globalData = watch(globalData, (data) => {
-  console.log("Before Procces")
-  if (hasProcessed) return;
 
-  
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
 
