@@ -1087,7 +1087,7 @@ Example structure for guidance:
 
 // watch implementation
 globalData = watch(globalData, (data) => {
-
+  console.log(data)
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
 
