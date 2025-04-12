@@ -1094,10 +1094,8 @@ globalData = watch(globalData, (data) => {
   if (!cachedData) {
       console.log("Executed")
       analyzeWithAI(prompt_three + " Data: " + data.thisYersData);
-      hasProcessed = true;
   } else if (cachedData) {
       console.log("Cashed")
       inject(cachedData, 'analysis-container');
-      hasProcessed = true;
   }
 });
