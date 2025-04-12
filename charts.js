@@ -902,9 +902,7 @@ function getData(name) {
 // AI anaylices data using AI` model
 async function analyzeWithAI(prompt) {
   try {
-    // Add timeout to the fetch request
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    console.log("Calling analyzeWithAI with prompt:", prompt.substring(0, 50) + "...");
     
     const response = await fetch('/.netlify/functions/analyzeWithAI', {
       method: 'POST',
@@ -912,10 +910,7 @@ async function analyzeWithAI(prompt) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ prompt }),
-      signal: controller.signal
     });
-    
-    clearTimeout(timeoutId);
     
     if (!response.ok) {
       const errorText = await response.text();
@@ -924,16 +919,18 @@ async function analyzeWithAI(prompt) {
     }
     
     const data = await response.json();
+    console.log("Received response:", data);
     return data;
   } catch (error) {
     console.error("Error in analyzeWithAI:", error.message);
-    // Implement retry logic or fallback behavior here
-    
-    // For now, return a placeholder result so your app doesn't crash
-    return { error: error.message, fallback: true };
+    // Return a fallback result so the app doesn't crash
+    return { 
+      error: error.message, 
+      fallback: true,
+      choices: [{ message: { content: "Unable to analyze data at this time." } }]
+    };
   }
 }
-
 
 const prompt_one =
 `
@@ -1106,27 +1103,35 @@ function watchProperty(obj, property, callback) {
       currentValue = obj[property];
       callback(currentValue, oldValue);
     }
-  }, 100); // Check every 100ms, adjust as needed
+  }, 100); // Check every 100ms
 }
 
-// Usage - watching the specific key
+// Watch the specific property
 watchProperty(globalData, 'thisYersData', (newValue, oldValue) => {
-  console.log("Before Process");
+  console.log("thisYersData changed:", newValue);
+  
   if (hasProcessed) return;
-  console.log("After process");
-  console.log("This years data: ", newValue);
   
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
-  console.log("cachedData:", cachedData);
-  console.log("thisYersData:", newValue);
   
   if (!cachedData && newValue) {
-    console.log("Executed");
-    analyzeWithAI(prompt_three + " Data: " + newValue);
-    hasProcessed = true;
+    console.log("Executing analysis...");
+    analyzeWithAI(prompt_three + " Data: " + newValue)
+      .then(result => {
+        if (!result.error) {
+          const content = result.choices[0].message.content;
+          // Process the result
+          saveData(dataName, content);
+          inject(content, 'analysis-container');
+        } else {
+          console.warn("Using fallback content due to error");
+          inject("Analysis unavailable. Please try again later.", 'analysis-container');
+        }
+        hasProcessed = true;
+      });
   } else if (cachedData) {
-    console.log("Cached");
+    console.log("Using cached data");
     inject(cachedData, 'analysis-container');
     hasProcessed = true;
   }
