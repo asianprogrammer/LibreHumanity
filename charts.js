@@ -1093,7 +1093,8 @@ globalData = watch(globalData, (data) => {
   console.log("After procces")
   const dataName = 'conflict-data';
   const cachedData = getData(dataName);
-
+  console.log("cachedData:", cachedData);
+  console.log("data.thisYersData:", data.thisYersData);
   if (!cachedData && data.thisYersData) {
       console.log("Executed")
       analyzeWithAI(prompt_three + " Data: " + data.thisYersData);
