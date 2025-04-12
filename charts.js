@@ -653,7 +653,7 @@ function getDaysDifference(targetDate, offsetDays = 0) {
   globalData.totalDay = data.length;
   globalData.thisYersData = data;
 
-  analyzeWithAI(prompt_three + " Data: " + data);
+  analyzeWithAI("Analyce and give me json file" + " Data: " + data);
 
   
   $("#today-kill-count").innerHTML = "Killed "+lastDayData.killed;
