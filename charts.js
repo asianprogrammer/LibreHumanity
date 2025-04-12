@@ -1100,7 +1100,7 @@ Example structure for guidance:
 let hasProcessed = false;
 
 // To watch a specific key in the globalData object
-watchProperty(globalData, 'thisYersData', async (newValue, oldValue) => {
+globalData = watchObjectKey(globalData, 'thisYersData', async (newValue, oldValue) => {
   console.log("thisYersData changed:", newValue);
 
   if (hasProcessed) return;
@@ -1139,3 +1139,25 @@ watchProperty(globalData, 'thisYersData', async (newValue, oldValue) => {
     hasProcessed = true;
   }
 });
+
+function watchObjectKey(obj, key, callback) {
+  if (key in obj) {
+    let value = obj[key];
+
+    Object.defineProperty(obj, key, {
+      get() {
+        return value;
+      },
+      set(newValue) {
+        const oldValue = value;
+        value = newValue;
+        callback(obj); // Pass the whole object or just the newValue/oldValue as you want
+      },
+      configurable: true,
+    });
+  } else {
+    throw new Error(`Key '${key}' does not exist in the object`);
+  }
+
+  return obj;
+}
