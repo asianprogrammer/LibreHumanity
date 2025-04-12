@@ -904,7 +904,7 @@ async function analyzeWithAI(prompt) {
   try {
     console.log("Calling analyzeWithAI with prompt:", prompt.substring(0, 50) + "...");
     
-    const response = await fetch('/.netlify/functions/analyzeWithAI', {
+    const response = await fetch('https://saveps.netlify.app/.netlify/functions/analyzeWithAI', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
