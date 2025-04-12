@@ -1122,8 +1122,8 @@ watchProperty(globalData, 'thisYersData', (newValue, oldValue) => {
         if (!result.error) {
           const content = result.choices[0].message.content;
 
-          console.log(content)
-          console.log(parseAIdata(content))
+          console.log("Data From AI: ", content)
+          console.log("Parse Data from AI: ", parseAIdata(content))
           // Process the result
           saveData(dataName, parseAIdata(content));
           inject(parseAIdata(content), 'analysis-container');
