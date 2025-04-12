@@ -1,72 +1,33 @@
-export async function handler(event, context) {
-  const apiKey = process.env.API_KEY;
-
-  if (!apiKey) {
-    console.error("API key not configured.");
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "API key not configured." }),
-    };
-  }
-
-  let prompt;
+async function analyzeWithAI(prompt) {
   try {
-    const body = JSON.parse(event.body || "{}");
-    prompt = body.prompt;
-  } catch (error) {
-    console.error("Error parsing request body:", error);
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Invalid JSON in request body." }),
-    };
-  }
-
-  if (!prompt) {
-    console.error("Prompt is required.");
-    return {
-      statusCode: 400,
-      body: JSON.stringify({ error: "Prompt is required." }),
-    };
-  }
-
-  try {
-    const response = await fetch(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "deepseek/deepseek-r1-zero:free",
-          messages: [
-            { role: "system", content: "You are a helpful assistant." },
-            { role: "user", content: prompt },
-          ],
-        }),
-      }
-    );
-
+    // Add timeout to the fetch request
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    
+    const response = await fetch('/.netlify/functions/your-function-name', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt }),
+      signal: controller.signal
+    });
+    
+    clearTimeout(timeoutId);
+    
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Error from OpenRouter:", errorData);
-      return {
-        statusCode: response.status,
-        body: JSON.stringify({ error: errorData.error || "Unknown error" }),
-      };
+      const errorText = await response.text();
+      console.error(`Error from API (${response.status}):`, errorText);
+      throw new Error(`API responded with status ${response.status}`);
     }
-
+    
     const data = await response.json();
-    return {
-      statusCode: 200,
-      body: JSON.stringify(data),
-    };
+    return data;
   } catch (error) {
-    console.error("Fetch failed:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Failed to fetch data from OpenRouter." }),
-    };
+    console.error("Error in analyzeWithAI:", error.message);
+    // Implement retry logic or fallback behavior here
+    
+    // For now, return a placeholder result so your app doesn't crash
+    return { error: error.message, fallback: true };
   }
 }
