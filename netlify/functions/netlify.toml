@@ -1,2 +1,3 @@
+# netlify.toml
 [functions]
-  timeout = 900
+  timeout = 900 
